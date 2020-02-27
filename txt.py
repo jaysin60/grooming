@@ -74,6 +74,11 @@ def clean_stopword(stp_txt):
         stp_txt = " ".join([w for w in token if w not in stopset]) #adding the text back to string
     except Exception as e:
         print(e)
+    except LookupError:
+        import nltk
+        nltk.download('stopwords')
+        nltk.download('averaged_perceptron_tagger')
+        print('Downloaded the required packages. Please re-run the program')
     return stp_txt
 
 

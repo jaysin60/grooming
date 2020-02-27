@@ -44,7 +44,12 @@ def lemm(text,txt_clean=True,word_len = 3,ignore_lem=[]):
             else:
                 lem+=t.lower()+' '
         clean_txt = str.rstrip(lem)
-
+    except LookupError:
+        import nltk
+        nltk.download('stopwords')
+        nltk.download('wordnet')
+        nltk.download('averaged_perceptron_tagger')
+        print('Downloaded the required packages. Please re-run the program')
     except Exception as e:
         print(e)
     return clean_txt
