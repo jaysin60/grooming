@@ -99,30 +99,39 @@ def cleaner(text,rem_email = True,rem_html = True,rem_stopwords=True,word2number
         need_token: Default to false. Enabling it will return the text in tokens.
 
     """
-    clean_text=str(text)
-    if rem_email:
-        clean_text = clean_email(clean_text) #remove emails from text
+    try:
+        clean_text=str(text)
+        if rem_email:
+            clean_text = clean_email(clean_text) #remove emails from text
 
-    if rem_html:
-        clean_text = clean_html(clean_text) #remove html tag from clean_text
+        if rem_html:
+            clean_text = clean_html(clean_text) #remove html tag from clean_text
 
-    if rem_stopwords:
-        clean_text = clean_stopword(clean_text)
+        if rem_stopwords:
+            clean_text = clean_stopword(clean_text)
 
-    if word2number:
-        clean_text = word2num(clean_text)
+        if word2number:
+            clean_text = word2num(clean_text)
 
-    if cus_reg:
-        clean_text = re.sub(cus_reg,' ',clean_text)
-    else:
-        clean_text = re.sub('[^A-Za-z0-9+]',' ',clean_text)
+        if cus_reg:
+            clean_text = re.sub(cus_reg,' ',clean_text)
+        else:
+            clean_text = re.sub('[^A-Za-z0-9+]',' ',clean_text)
 
-    if rem_space:
-        token = clean_text.split(" ")
-        token = [tok for tok in token if tok not in ' ' or tok not in '']
-        clean_text = " ".join(token)
+        if rem_space:
+            token = clean_text.split(" ")
+            token = [tok for tok in token if tok not in ' ' or tok not in '']
+            clean_text = " ".join(token)
 
-    if need_token:
-        clean_text = tokenizer.tokenize(clean_text)
+        if need_token:
+            clean_text = tokenizer.tokenize(clean_text)
 
-    return clean_text
+        return clean_text
+    except LookupError:
+        import nltk
+        nltk.download('stopwords')
+        nltk.download('wordnet')
+        nltk.download('averaged_perceptron_tagger')
+        print('Downloaded the required packages. Please re-run the program')
+    except Exception as e:
+        print('Error occured:',e)
